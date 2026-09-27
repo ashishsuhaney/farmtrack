@@ -1,0 +1,18 @@
+{
+  "overview": "A farm plot tracker where signed-in farmers register their farms with map locations, log field activity, and view all their plots on an interactive map with live weather.",
+  "features": [
+    "Sign in and keep each farmer's data private",
+    "Register farm plots with GPS or place-name search",
+    "See all plots on an interactive map with markers",
+    "Log field activity and filter the timeline",
+    "View current weather for each plot"
+  ],
+  "category": "productivity",
+  "tags": [
+    "agriculture",
+    "maps",
+    "tracking",
+    "farming"
+  ],
+  "last_updated": "2026-09-26T19:29:35.263Z"
+}

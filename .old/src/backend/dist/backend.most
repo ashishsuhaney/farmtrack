@@ -1,0 +1,117 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type ActivityId__326478791 = Nat;
+type ActivityId__495225641 = Nat;
+type ActivityId__590458447 = ActivityId__326478791;
+type ActivityType__62502559 =
+  {#fertilizing; #harvest; #irrigation; #pestControl; #planting};
+type ActivityType__688629877 =
+  {#fertilizing; #harvest; #irrigation; #pestControl; #planting};
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type FarmPlot__277778162 =
+  {
+    areaHectares : Float;
+    createdAt : Timestamp__784787003;
+    cropType : Text;
+    id : PlotId__306194407;
+    latitude : Float;
+    locationLabel : Text;
+    longitude : Float;
+    name : Text;
+    updatedAt : Timestamp__784787003
+  };
+type FarmPlot__617478540 =
+  {
+    areaHectares : Float;
+    createdAt : Timestamp__279418848;
+    cropType : Text;
+    id : PlotId__651814071;
+    latitude : Float;
+    locationLabel : Text;
+    longitude : Float;
+    name : Text;
+    updatedAt : Timestamp__279418848
+  };
+type FarmState__691074652 =
+  {
+    activities :
+      Map__230067015<Principal, List__836382695<FieldActivity__86080935>>;
+    var nextActivityId : Nat;
+    var nextPlotId : Nat;
+    plots : Map__230067015<Principal, List__836382695<FarmPlot__617478540>>;
+    profiles : Map__230067015<Principal, FarmerProfile__907549822>
+  };
+type FarmerProfile__282770155 = {defaultRegion : Text; displayName : Text};
+type FarmerProfile__907549822 = {defaultRegion : Text; displayName : Text};
+type FieldActivity__434884145 =
+  {
+    activityType : ActivityType__62502559;
+    createdAt : Timestamp__784787003;
+    date : Timestamp__784787003;
+    id : ActivityId__590458447;
+    notes : Text;
+    plotId : PlotId__306194407
+  };
+type FieldActivity__86080935 =
+  {
+    activityType : ActivityType__688629877;
+    createdAt : Timestamp__279418848;
+    date : Timestamp__279418848;
+    id : ActivityId__495225641;
+    notes : Text;
+    plotId : PlotId__651814071
+  };
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type List__355132335<T> =
+  {
+    var blockIndex : Nat__227979830;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__227979830
+  };
+type List__836382695<T> = List__355132335<T>;
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__563741893 =
+  {
+    accessControlState : AccessControlState__201339279;
+    farmState : FarmState__691074652
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type OldActor__325662370 = {};
+type PlotId__306194407 = PlotId__984459779;
+type PlotId__651814071 = Nat;
+type PlotId__984459779 = Nat;
+type Timestamp__279418848 = Int;
+type Timestamp__301639476 = Int;
+type Timestamp__784787003 = Timestamp__301639476;
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "00000001_000000" : OldActor__325662370 -> NewActor__563741893
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable farmState :
+    {
+      activities :
+        Map__230067015<Principal, List__836382695<FieldActivity__434884145>>;
+      var nextActivityId : Nat;
+      var nextPlotId : Nat;
+      plots : Map__230067015<Principal, List__836382695<FarmPlot__277778162>>;
+      profiles : Map__230067015<Principal, FarmerProfile__282770155>
+    }
+};

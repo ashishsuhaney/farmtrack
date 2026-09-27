@@ -1,0 +1,153 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Timestamp = int;
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type PlotId = nat;
+type FieldActivityInput = 
+ record {
+   activityType: ActivityType;
+   date: Timestamp;
+   notes: text;
+   plotId: PlotId;
+ };
+type FieldActivity = 
+ record {
+   activityType: ActivityType;
+   createdAt: Timestamp;
+   date: Timestamp;
+   id: ActivityId;
+   notes: text;
+   plotId: PlotId;
+ };
+type FarmerProfile = 
+ record {
+   defaultRegion: text;
+   displayName: text;
+ };
+type FarmPlotUpdate = 
+ record {
+   areaHectares: float64;
+   cropType: text;
+   latitude: float64;
+   locationLabel: text;
+   longitude: float64;
+   name: text;
+ };
+type FarmPlotInput = 
+ record {
+   areaHectares: float64;
+   cropType: text;
+   latitude: float64;
+   locationLabel: text;
+   longitude: float64;
+   name: text;
+ };
+type FarmPlot = 
+ record {
+   areaHectares: float64;
+   createdAt: Timestamp;
+   cropType: text;
+   id: PlotId;
+   latitude: float64;
+   locationLabel: text;
+   longitude: float64;
+   name: text;
+   updatedAt: Timestamp;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type DashboardSummary = 
+ record {
+   mostRecentActivity: opt FieldActivity;
+   totalAreaHectares: float64;
+   totalFarms: nat;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+type ActivityType = 
+ variant {
+   fertilizing;
+   harvest;
+   irrigation;
+   pestControl;
+   planting;
+ };
+type ActivityId = nat;
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  /// Log an activity against one of the caller's plots.
+  addActivity: (input: FieldActivityInput) -> (FieldActivity);
+  /// Create a farm plot owned by the caller.
+  addPlot: (input: FarmPlotInput) -> (FarmPlot);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  /// Delete one of the caller's plots and its activities.
+  deletePlot: (plotId: PlotId) -> (bool);
+  execute: (qJson: text) -> (Result) query;
+  /// Return the backend's public API documentation as Markdown.
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Summarize the caller's farms, total area, and most recent activity.
+  getDashboardSummary: () -> (DashboardSummary) query;
+  /// Return one of the caller's plots, or null when it does not exist or is not theirs.
+  getPlot: (plotId: PlotId) -> (opt FarmPlot) query;
+  /// Return the caller's profile, or null when none has been saved yet.
+  getProfile: () -> (opt FarmerProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  /// List the caller's activities for a plot, newest first, optionally filtered by type.
+  listActivities: (plotId: PlotId, filter: opt ActivityType) ->
+   (vec FieldActivity) query;
+  /// List all farm plots owned by the caller.
+  listPlots: () -> (vec FarmPlot) query;
+  schema: () -> (text) query;
+  /// Create or replace the caller's profile.
+  setProfile: (displayName: text, defaultRegion: text) -> (FarmerProfile);
+  /// Update one of the caller's plots.
+  updatePlot: (plotId: PlotId, input: FarmPlotUpdate) -> (FarmPlot);
+}
